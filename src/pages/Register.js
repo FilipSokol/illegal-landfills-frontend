@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 function Register() {
   let navigate = useNavigate();
 
-  const [usernameVal, setUsernameVal] = useState(false);
-  const [emailVal, setEmailVal] = useState(false);
-  const [passwordVal, setPasswordVal] = useState(false);
-  const [secPasswordVal, setSecPasswordVal] = useState(false);
+  const [usernameVal, setUsernameVal] = useState();
+  const [emailVal, setEmailVal] = useState();
+  const [passwordVal, setPasswordVal] = useState();
+  const [secPasswordVal, setSecPasswordVal] = useState();
+  const [valStatus, setValStatus] = useState();
 
   const [usernameMes, setUsernameMes] = useState("");
   const [emailMes, setEmailMes] = useState("");
@@ -73,23 +74,33 @@ function Register() {
       passwordVal === true &&
       secPasswordVal === true
     ) {
-      register();
+      setValStatus(true);
     }
   };
 
   const register = () => {
-    Axios.post("http://localhost:3001/register", {
-      username: usernameReg,
-      email: emailReg,
-      password: passwordReg,
-    }).then((response) => {
-      if (response.data.message) {
-        setRegisterStatus(response.data.message);
-      } else {
-        console.log(response);
-      }
-    });
+    if (valStatus === true) {
+      Axios.post("http://localhost:3001/register", {
+        username: usernameReg,
+        email: emailReg,
+        password: passwordReg,
+      }).then((response) => {
+        if (response.data.message) {
+          setRegisterStatus(response.data.message);
+        } else {
+          console.log(response);
+        }
+      });
+    } else {
+      validation();
+    }
   };
+
+  useEffect(() => {
+    if (usernameReg != "" || emailReg != "" || passwordReg != "") {
+      validation();
+    }
+  });
 
   return (
     <div className="h-fullscreen flex justify-center items-center font-sora text-lightblack">
@@ -156,7 +167,7 @@ function Register() {
             <button
               type="submit"
               className="w-full text-center py-3 rounded bg-lightgreen text-white hover:bg-darkgreen focus:outline-none my-1"
-              onClick={validation}
+              onClick={register}
             >
               Utwórz konto
             </button>
