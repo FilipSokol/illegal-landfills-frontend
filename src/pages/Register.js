@@ -88,7 +88,8 @@ function Register() {
         if (response.data.message) {
           setRegisterStatus(response.data.message);
         } else {
-          console.log(response);
+          console.log(response.data.message);
+          navigate("/Login");
         }
       });
     } else {
