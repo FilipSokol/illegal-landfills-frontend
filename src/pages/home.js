@@ -1,13 +1,14 @@
-import React from "react";
+//  import React, { useEffect, useRef } from "react";
 import Hero from "../components/Hero";
+import Map from "../components/Map";
 
-function home() {
+function Home() {
   return (
     <div className="m-0">
       <Hero />
-      <div className="h-96"></div>
+      <Map />
     </div>
   );
 }
 
-export default home;
+export default Home;

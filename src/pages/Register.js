@@ -98,7 +98,7 @@ function Register() {
   };
 
   useEffect(() => {
-    if (usernameReg != "" || emailReg != "" || passwordReg != "") {
+    if (usernameReg !== "" || emailReg !== "" || passwordReg !== "") {
       validation();
     }
   });
