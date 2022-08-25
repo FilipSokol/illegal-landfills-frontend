@@ -1,35 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import Axios from "axios";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import AuthService from "../services/auth.service";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "../images/logo.svg";
 
 const Navbar = ({ toggle }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [cookieExist, setCookieExist] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
-  function checkIfCookieExists() {
-    if (
-      document.cookie
-        .split(";")
-        .some((item) => item.trim().startsWith("userId="))
-    ) {
-      setCookieExist(true);
-    } else {
-      setCookieExist(false);
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+      return null;
     }
-  }
+  };
 
-  const logout = () => {
-    Axios.get("http://localhost:3001/logout");
+  const AuthVerify = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const decodedJwt = parseJwt(user.accessToken);
+      if (decodedJwt.exp * 1000 < Date.now()) {
+        logOut();
+      }
+    }
   };
 
   useEffect(() => {
-    checkIfCookieExists();
-  });
+    AuthVerify();
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, [location.pathname]);
+
+  const logOut = () => {
+    AuthService.logout();
+    window.location.reload(); //! Poprawić, wraca na stronę na której byliśmy podczas wylogowywania
+  };
 
   return (
     <div className="h-navbar font-montserrat text-lg">
@@ -56,18 +68,15 @@ const Navbar = ({ toggle }) => {
             Strona Główna
           </Link>
           <Link to="/about" className="p-4">
-            O Nas
+            Panel Admina
           </Link>
           <Link to="/contact" className="p-4">
-            Kontakt
+            Moje Posty
           </Link>
 
-          {cookieExist ? (
+          {currentUser ? (
             <Link
-              onClick={() => {
-                logout();
-                Navbar.forceUpdate(); // Force update po tym jak zaloguje (w teorii powinno się tego unikać)
-              }}
+              onClick={logOut}
               to="/"
               className="px-3 py-2 bg-lightgreen rounded-full text-lightblack"
             >

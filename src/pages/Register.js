@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import AuthService from "../services/auth.service";
+
 function Register() {
   let navigate = useNavigate();
 
@@ -78,18 +80,20 @@ function Register() {
     }
   };
 
-  const register = () => {
+  const register = (e) => {
+    e.preventDefault();
+
     if (valStatus === true) {
-      Axios.post("http://localhost:3001/register", {
+      Axios.post("http://localhost:3001/api/register", {
         username: usernameReg,
         email: emailReg,
         password: passwordReg,
       }).then((response) => {
-        if (response.data.message) {
-          setRegisterStatus(response.data.message);
-        } else {
-          console.log(response.data.message);
+        if (response.data.message === "") {
           navigate("/Login");
+          window.location.reload();
+        } else {
+          setRegisterStatus(response.data.message);
         }
       });
     } else {
@@ -155,7 +159,7 @@ function Register() {
               type="password"
               className="block border border-grey-light w-full p-3 rounded"
               name="confirm_password"
-              placeholder="Potwierdź hasło"
+              placeholder="Powtórz hasło"
               onChange={(e) => {
                 setSecPasswordReg(e.target.value);
               }}
