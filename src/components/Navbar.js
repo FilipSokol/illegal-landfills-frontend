@@ -4,13 +4,15 @@ import AuthService from "../services/auth.service";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import "antd/dist/antd.min.css";
 import logo from "../images/logo.svg";
 
 const Navbar = ({ toggle }) => {
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const [authorized, setAuthorized] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [currentUser, setCurrentUser] = useState(undefined);
 
   const parseJwt = (token) => {
     try {
@@ -24,6 +26,9 @@ const Navbar = ({ toggle }) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       const decodedJwt = parseJwt(user.accessToken);
+      if (decodedJwt.role === "admin") {
+        setAuthorized(true);
+      }
       if (decodedJwt.exp * 1000 < Date.now()) {
         logOut();
       }
@@ -40,6 +45,7 @@ const Navbar = ({ toggle }) => {
 
   const logOut = () => {
     AuthService.logout();
+    navigate("/");
     window.location.reload(); //! Poprawić, wraca na stronę na której byliśmy podczas wylogowywania
   };
 
@@ -64,28 +70,38 @@ const Navbar = ({ toggle }) => {
           <FontAwesomeIcon icon={faBars} className="w-8 h-8 text-lightblack" />
         </div>
         <div className="pr-8 nvbar:block hidden">
-          <Link to="/" className="p-4">
+          <Link to="/" className="p-4 text-lightblack hover:text-lightblack">
             Strona Główna
-          </Link>
-          <Link to="/about" className="p-4">
-            Panel Admina
-          </Link>
-          <Link to="/contact" className="p-4">
-            Moje Posty
           </Link>
 
           {currentUser ? (
-            <Link
-              onClick={logOut}
-              to="/"
-              className="px-3 py-2 bg-lightgreen rounded-full text-lightblack"
-            >
-              Wyloguj
-            </Link>
+            <>
+              {authorized && (
+                <Link
+                  to="/admin"
+                  className="p-4 text-lightblack hover:text-lightblack"
+                >
+                  Panel Admina
+                </Link>
+              )}
+              <Link
+                to="/contact"
+                className="p-4 text-lightblack hover:text-lightblack"
+              >
+                Moje Posty
+              </Link>
+              <Link
+                onClick={logOut}
+                to="/"
+                className="px-3 py-2 ml-2 bg-lightgreen rounded-full text-lightblack hover:text-lightblack"
+              >
+                Wyloguj
+              </Link>
+            </>
           ) : (
             <Link
               to="/login"
-              className="px-3 py-2 bg-lightgreen rounded-full text-lightblack"
+              className="px-3 py-2 ml-2 bg-lightgreen rounded-full text-lightblack hover:text-lightblack"
             >
               Logowanie
             </Link>

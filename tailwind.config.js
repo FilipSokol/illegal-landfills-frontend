@@ -17,6 +17,12 @@ module.exports = {
         sora: ["Sora", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
       },
+      minWidth: {
+        "1/2": "50%",
+      },
+      maxWidth: {
+        "1/2": "50%",
+      },
       width: {
         sketchaboutlg: "381.33px",
         sketchaboutxl: "418px",
@@ -30,6 +36,7 @@ module.exports = {
         pboxxl: "1140px",
         textbox: "40rem",
         projectbox: "60rem",
+        markerbox: "38rem",
       },
       height: {
         sketchaboutlg: "500px",
@@ -52,9 +59,7 @@ module.exports = {
         navbar: "7vh",
         herologo: "23rem",
         smlogo: "43px",
-      },
-      backgroundImage: {
-        "hero-img": "url('./images/hero-trash.jpg')",
+        markerbox: "27rem",
       },
     },
   },

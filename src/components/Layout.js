@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Strony
 import Home from "../pages/Home";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
+import Admin from "../pages/Admin/Admin";
+import AllReports from "../pages/Admin/AllReports";
+import AllUsers from "../pages/Admin/AllUsers";
+import AllPosts from "../pages/Admin/AllPosts";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ErrorPage from "../pages/Errorpage";
@@ -40,8 +42,12 @@ function Layout() {
       <Dropdown isOpen={isOpen} toggle={toggle} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<AllReports />} />
+          <Route path="zgloszenia" element={<AllReports />} />
+          <Route path="markery" element={<AllPosts />} />
+          <Route path="uzytkownicy" element={<AllUsers />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<ErrorPage />} />

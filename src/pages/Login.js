@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { notification } from "antd";
 
 function Login() {
   let navigate = useNavigate();
@@ -20,9 +21,17 @@ function Login() {
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
-        window.location.reload();
+        // window.location.reload();
+        notification.success({
+          message: "Pomyślnie zalogowano.",
+          top: 95,
+        });
       } else {
         setLoginStatus(response.data.message);
+        notification.error({
+          message: "Błąd logowania.",
+          top: 95,
+        });
       }
     });
   };
