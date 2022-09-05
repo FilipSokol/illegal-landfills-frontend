@@ -40,8 +40,20 @@ function Map() {
     });
   }, []);
 
-  // console.log(markers);
+  const trashReportPost = (markerid) => {
+    Axios.post("http://localhost:3001/api/reporttrash", {
+      markerid: markerid,
+    }).then((response) => {
+      if (response.data.affectedRows) {
+        notification.warning({
+          message: "Zgłoszono dalsze zaśmiecenie miejsca.",
+          top: 95,
+        });
+      }
+    });
+  };
 
+  // console.log(markers);
   const reportPost = (markerid) => {
     Axios.post("http://localhost:3001/api/reportmarker", {
       markerid: markerid,
@@ -90,7 +102,7 @@ function Map() {
       >
         {markers.map(
           (
-            { markerid, latitude, longitude, imageurl, description },
+            { markerid, latitude, longitude, imageurl, description, updated },
             i,
             arr
           ) => {
@@ -133,16 +145,25 @@ function Map() {
                             Aktualizacje
                           </div>
                           <div className="h-20 w-full p-2 shadow-md flex justify-start items-start rounded-b-lg">
-                            19/05/2022 - Posprzątane
-                            <br />
-                            Zgłoszenie zostanie zarchiwizowane za 2 dni
+                            {/* 19/05/2022 - Śmieci nadal tutaj są */}
+                            {/* <br />
+                            Zgłoszenie zostanie zarchiwizowane za 2 dni */}
+                            {updated !== null &&
+                              updated.substring(0, 10) +
+                                " - Śmieci nadal tutaj są"}
                           </div>
                         </div>
                         <div className="flex flex-col h-auto w-full mt-3 justify-center items-start space-y-4">
                           <button className="h-10 w-full bg-sky-400	 rounded-lg text-white text-lg shadow-md">
                             Posprzątane
                           </button>
-                          <button className="mt-3 h-10 w-full bg-yellow-400 rounded-lg text-white text-lg shadow-md">
+                          <button
+                            className="mt-3 h-10 w-full bg-yellow-400 disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
+                            onClick={(e) => (
+                              trashReportPost(markerid),
+                              (e.currentTarget.disabled = true)
+                            )}
+                          >
                             Nadal tutaj są
                           </button>
 

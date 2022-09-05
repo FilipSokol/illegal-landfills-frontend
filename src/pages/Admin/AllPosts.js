@@ -50,12 +50,14 @@ function AllPosts() {
           dataIndex="userid"
           key="userid"
           width="3.4%"
+          sorter={(a, b) => a.userid - b.userid}
         />
         <Column
           title="ID Markera"
           dataIndex="markerid"
           key="markerid"
           width="2.8%"
+          sorter={(a, b) => a.markerid - b.markerid}
         />
         <Column
           title="Zdjęcie"
@@ -77,13 +79,16 @@ function AllPosts() {
         <Column
           title="Data Dodania"
           dataIndex="created"
-          key="crated"
+          key="created"
           width="3.3%"
-          render={(imageurl) => imageurl.substring(0, 10)}
+          sorter={(a, b) => a.created.localeCompare(b.created)}
+          render={(created) => (
+            <div className="whitespace-nowrap">{created.substring(0, 10)}</div>
+          )}
         />
         <Column
           dataIndex="markerid"
-          key="crated"
+          key="deletemarker"
           width="1%"
           render={(markerid) => (
             <button

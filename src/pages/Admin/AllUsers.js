@@ -31,7 +31,7 @@ function AllUsers() {
   }, []);
 
   return (
-    <div className="mx-64 mb-16 p-4 border-2 rounded-lg">
+    <div className="mx-64 mb-16 w-max p-4 border-2 rounded-lg">
       <Table
         dataSource={users}
         pagination={true}
@@ -49,18 +49,26 @@ function AllUsers() {
           dataIndex="userid"
           key="userid"
           width="20%"
+          sorter={(a, b) => a.userid - b.userid}
         />
         <Column
           title="Nazwa Użytkownika"
           dataIndex="username"
           key="username"
           width="20%"
+          sorter={(a, b) => a.username.localeCompare(b.username)}
         />
-        <Column title="Email" dataIndex="email" key="email" width="20%" />
+        <Column
+          title="Email"
+          dataIndex="email"
+          key="email"
+          width="20%"
+          sorter={(a, b) => a.email.localeCompare(b.email)}
+        />
         <Column title="Rola" dataIndex="role" key="role" width="20%" />
         <Column
-          dataIndex="markerid"
-          key="crated"
+          dataIndex="userid"
+          key="deleteuser"
           width="1%"
           render={(userid) => (
             <button

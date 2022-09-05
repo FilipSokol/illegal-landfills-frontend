@@ -85,7 +85,7 @@ const Navbar = ({ toggle }) => {
                 </Link>
               )}
               <Link
-                to="/contact"
+                to="/posty"
                 className="p-4 text-lightblack hover:text-lightblack"
               >
                 Moje Posty

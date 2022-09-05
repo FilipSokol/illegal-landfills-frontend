@@ -9,6 +9,7 @@ import AllUsers from "../pages/Admin/AllUsers";
 import AllPosts from "../pages/Admin/AllPosts";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Posts from "../pages/Posts";
 import ErrorPage from "../pages/Errorpage";
 
 // Komponenty
@@ -50,6 +51,7 @@ function Layout() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/posty" element={<Posts />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>

@@ -3,8 +3,25 @@ import { Table, notification } from "antd";
 import Column from "antd/lib/table/Column";
 import Axios from "axios";
 
-function AllReports() {
+function Posts() {
   const [markers, setMarkers] = useState([]);
+  const [userId, setUserId] = useState(undefined);
+
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const AuthVerify = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const decodedJwt = parseJwt(user.accessToken);
+      setUserId(decodedJwt.userid);
+    }
+  };
 
   //! DODAĆ ŻE USUWA TEZ FOTKE Z CLOUDINARY
   const deleteMarker = (markerid) => {
@@ -21,32 +38,22 @@ function AllReports() {
     });
   };
 
-  const deleteReport = (markerid) => {
-    Axios.post("http://localhost:3001/api/deletereport", {
-      markerid: markerid,
-    }).then((response) => {
-      if (response.data.affectedRows) {
-        downloadData();
-        notification.success({
-          message: "Pomyślnie usunięto zgłoszenie.",
-          top: 95,
-        });
-      }
-    });
-  };
-
+  //! DOROBIĆ
   const downloadData = () => {
-    Axios.get("http://localhost:3001/api/reportedmarkers").then((response) => {
+    Axios.post("http://localhost:3001/api/usermarkers", {
+      userid: userId,
+    }).then((response) => {
       setMarkers(response.data);
     });
   };
 
   useEffect(() => {
+    AuthVerify();
     downloadData();
-  }, []);
+  }, [userId]);
 
   return (
-    <div className="mx-64 mb-16 p-4 border-2 rounded-lg">
+    <div className="mx-64 mt-28 mb-16 p-4 border-2 rounded-lg">
       <Table
         dataSource={markers}
         pagination={true}
@@ -59,13 +66,6 @@ function AllReports() {
         }}
         rowKey="markerid"
       >
-        <Column
-          title="ID Użytkownika"
-          dataIndex="userid"
-          key="userid"
-          width="3.4%"
-          sorter={(a, b) => a.userid - b.userid}
-        />
         <Column
           title="ID Markera"
           dataIndex="markerid"
@@ -115,24 +115,9 @@ function AllReports() {
             </button>
           )}
         />
-        <Column
-          dataIndex="markerid"
-          key="deletereport"
-          width="1%"
-          render={(markerid) => (
-            <button
-              onClick={() => {
-                deleteReport(markerid);
-              }}
-              className={"border-2 p-2 rounded-lg whitespace-nowrap"}
-            >
-              Usuń zgłoszenie
-            </button>
-          )}
-        />
       </Table>
     </div>
   );
 }
 
-export default AllReports;
+export default Posts;

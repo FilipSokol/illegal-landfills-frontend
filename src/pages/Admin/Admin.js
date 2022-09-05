@@ -36,14 +36,14 @@ function Admin() {
     <>
       {authorized && (
         <div className="w-100 mt-20 flex flex-col">
-          <div className="flex gap-x-4 justify-center">
+          <div className="flex gap-x-2 justify-center">
             <Link to="zgloszenia">
               <div
                 className={
                   location.pathname === "/admin" ||
                   location.pathname === "/admin/zgloszenia"
-                    ? "py-3 px-6 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
-                    : "py-3 px-6 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
+                    ? "py-2 px-4 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
+                    : "py-2 px-4 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
                 }
               >
                 Zgłoszone Posty
@@ -53,8 +53,8 @@ function Admin() {
               <div
                 className={
                   location.pathname === "/admin/markery"
-                    ? "py-3 px-6 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
-                    : "py-3 px-6 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
+                    ? "py-2 px-4 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
+                    : "py-2 px-4 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
                 }
               >
                 Wszystkie Posty
@@ -64,8 +64,8 @@ function Admin() {
               <div
                 className={
                   location.pathname === "/admin/uzytkownicy"
-                    ? "py-3 px-6 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
-                    : "py-3 px-6 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
+                    ? "py-2 px-4 border-x-2 border-t-2 text-lg bg-lightgreen rounded-t-xl text-lightblack hover:text-lightblack"
+                    : "py-2 px-4 border-x-2 border-t-2 text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
                 }
               >
                 Wszyscy użytkownicy
