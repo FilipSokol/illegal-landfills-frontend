@@ -61,6 +61,9 @@ module.exports = {
         smlogo: "43px",
         markerbox: "27rem",
       },
+      fontSize: {
+        title: ["10rem", "20rem"],
+      },
     },
   },
   plugins: [],

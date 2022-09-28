@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import AuthService from "../services/auth.service";
+import {
+  usernameRegex,
+  emailRegex,
+  passwordRegex,
+} from "../services/register.service";
 
 function Register() {
   let navigate = useNavigate();
@@ -28,11 +31,6 @@ function Register() {
   Axios.defaults.withCredentials = true;
 
   const validation = () => {
-    const usernameRegex = /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
-    const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
-
     // USERNAME
     if (usernameRegex.test(usernameReg)) {
       setUsernameVal(true);
@@ -110,7 +108,7 @@ function Register() {
   return (
     <div className="h-fullscreen flex justify-center items-center font-sora text-lightblack">
       <div className="bg-grey-lighter flex flex-col ">
-        <div className="container  flex-1 flex flex-col items-center justify-center px-2">
+        <div className="container flex-1 flex flex-col items-center justify-center px-2">
           <div className="bg-white px-10 py-8 rounded shadow-md w-full">
             <h1 className="mb-8 text-3xl text-center">Rejestracja</h1>
             <input

@@ -27,24 +27,39 @@ const center = {
   lng: 19.357910156250004,
 };
 
-// notification.error({
-//   message: "Błędna data ważności.",
-//   placement: "topRight",
-// });
 function Map() {
   const [markers, setMarkers] = useState([]);
 
-  useEffect(() => {
+  const getMarkers = () => {
     Axios.get("http://localhost:3001/api/markers").then((response) => {
       setMarkers(response.data);
     });
+  };
+
+  useEffect(() => {
+    getMarkers();
   }, []);
+
+  const deleteReportPost = (markerid) => {
+    Axios.post("http://localhost:3001/api/deletetrashmarker", {
+      markerid: markerid,
+    }).then((response) => {
+      if (response.data.affectedRows) {
+        getMarkers();
+        notification.warning({
+          message: "Zgłoszono posprzątanie miejsca.",
+          top: 95,
+        });
+      }
+    });
+  };
 
   const trashReportPost = (markerid) => {
     Axios.post("http://localhost:3001/api/reporttrash", {
       markerid: markerid,
     }).then((response) => {
       if (response.data.affectedRows) {
+        getMarkers();
         notification.warning({
           message: "Zgłoszono dalsze zaśmiecenie miejsca.",
           top: 95,
@@ -53,12 +68,12 @@ function Map() {
     });
   };
 
-  // console.log(markers);
   const reportPost = (markerid) => {
     Axios.post("http://localhost:3001/api/reportmarker", {
       markerid: markerid,
     }).then((response) => {
       if (response.data.affectedRows) {
+        getMarkers();
         notification.warning({
           message: "Zgłoszono post.",
           top: 95,
@@ -100,9 +115,19 @@ function Map() {
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
+        {/* <MarkerClusterer>
+          {(clusterer) =>  */}
         {markers.map(
           (
-            { markerid, latitude, longitude, imageurl, description, updated },
+            {
+              markerid,
+              latitude,
+              longitude,
+              imageurl,
+              description,
+              updated,
+              deleted,
+            },
             i,
             arr
           ) => {
@@ -117,6 +142,7 @@ function Map() {
                 icon={markerIcon}
                 position={position}
                 onClick={() => handleActiveMarker(markerid)}
+                // clusterer={clusterer}
               >
                 {activeMarker === markerid ? (
                   <InfoWindow
@@ -137,24 +163,38 @@ function Map() {
                             Opis
                           </div>
                           <div className="h-24 w-full p-2 shadow-md flex justify-start items-start rounded-b-lg">
-                            {description}
+                            {description !== null ? description : "Brak opisu."}
                           </div>
                         </div>
                         <div className="h-auto w-auto flex flex-col mt-3">
                           <div className="h-10 w-full text-2xl flex justify-center items-center rounded-t-lg  bg-lightgreen text-white">
                             Aktualizacje
                           </div>
-                          <div className="h-20 w-full p-2 shadow-md flex justify-start items-start rounded-b-lg">
-                            {/* 19/05/2022 - Śmieci nadal tutaj są */}
-                            {/* <br />
-                            Zgłoszenie zostanie zarchiwizowane za 2 dni */}
-                            {updated !== null &&
-                              updated.substring(0, 10) +
-                                " - Śmieci nadal tutaj są"}
+                          <div className="h-20 w-full p-2 shadow-md flex flex-col justify-start items-start rounded-b-lg">
+                            {deleted === null &&
+                              updated === null &&
+                              "Brak aktualizacji."}
+                            <div>
+                              {deleted !== null &&
+                                deleted.substring(0, 10) +
+                                  " - Post zostanie usunięty. Zgłoszono posprzątanie."}
+                            </div>
+                            <div>
+                              {updated !== null &&
+                                updated.substring(0, 10) +
+                                  " - Śmieci nadal tutaj są"}
+                            </div>
                           </div>
                         </div>
                         <div className="flex flex-col h-auto w-full mt-3 justify-center items-start space-y-4">
-                          <button className="h-10 w-full bg-sky-400	 rounded-lg text-white text-lg shadow-md">
+                          <button
+                            className="h-10 w-full bg-sky-400	disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
+                            onClick={(e) => (
+                              deleteReportPost(markerid),
+                              (e.currentTarget.disabled = true)
+                            )}
+                            disabled={deleted !== null}
+                          >
                             Posprzątane
                           </button>
                           <button
@@ -163,16 +203,17 @@ function Map() {
                               trashReportPost(markerid),
                               (e.currentTarget.disabled = true)
                             )}
+                            disabled={deleted !== null}
                           >
                             Nadal tutaj są
                           </button>
-
                           <button
                             className="mt-3 h-10 w-full bg-red-500 disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
                             onClick={(e) => (
                               reportPost(markerid),
                               (e.currentTarget.disabled = true)
                             )}
+                            disabled={deleted !== null}
                           >
                             Zgłoś post
                           </button>
@@ -185,6 +226,7 @@ function Map() {
             );
           }
         )}
+        {/*  } </MarkerClusterer> */}
       </GoogleMap>
     </div>
   ) : null;
