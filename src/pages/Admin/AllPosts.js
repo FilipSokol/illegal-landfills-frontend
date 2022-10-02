@@ -49,21 +49,21 @@ function AllPosts() {
           title="ID Użytkownika"
           dataIndex="userid"
           key="userid"
-          width="3.4%"
+          width="16.6%"
           sorter={(a, b) => a.userid - b.userid}
         />
         <Column
           title="ID Markera"
           dataIndex="markerid"
           key="markerid"
-          width="2.8%"
+          width="16.6%"
           sorter={(a, b) => a.markerid - b.markerid}
         />
         <Column
           title="Zdjęcie"
           dataIndex="imageurl"
           key="imageurl"
-          width="1%"
+          width="16.6%"
           render={(imageurl) => (
             <a href={imageurl} target="_blank">
               Link
@@ -80,7 +80,7 @@ function AllPosts() {
           title="Data Dodania"
           dataIndex="created"
           key="created"
-          width="3.3%"
+          width="16.6%"
           sorter={(a, b) => a.created.localeCompare(b.created)}
           render={(created) => (
             <div className="whitespace-nowrap">{created.substring(0, 10)}</div>
@@ -89,7 +89,7 @@ function AllPosts() {
         <Column
           dataIndex="markerid"
           key="deletemarker"
-          width="1%"
+          width="16.6%"
           render={(markerid) => (
             <button
               onClick={() => {

@@ -46,7 +46,7 @@ const Navbar = ({ toggle }) => {
   const logOut = () => {
     AuthService.logout();
     navigate("/");
-    window.location.reload(); //! Poprawić, wraca na stronę na której byliśmy podczas wylogowywania
+    window.location.reload();
   };
 
   return (
@@ -72,6 +72,12 @@ const Navbar = ({ toggle }) => {
         <div className="pr-8 nvbar:block hidden">
           <Link to="/" className="p-4 text-lightblack hover:text-lightblack">
             Strona Główna
+          </Link>
+          <Link
+            to="/scoreboard"
+            className="p-4 text-lightblack hover:text-lightblack"
+          >
+            Ranking
           </Link>
 
           {currentUser ? (

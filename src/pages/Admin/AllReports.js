@@ -63,21 +63,28 @@ function AllReports() {
           title="ID Użytkownika"
           dataIndex="userid"
           key="userid"
-          width="3.4%"
+          width="12.5%"
+          sorter={(a, b) => a.userid - b.userid}
+        />
+        <Column
+          title="Nazwa Użytkownika"
+          dataIndex="username"
+          key="username"
+          width="12.5%"
           sorter={(a, b) => a.userid - b.userid}
         />
         <Column
           title="ID Markera"
           dataIndex="markerid"
           key="markerid"
-          width="2.8%"
+          width="12.5%"
           sorter={(a, b) => a.markerid - b.markerid}
         />
         <Column
           title="Zdjęcie"
           dataIndex="imageurl"
           key="imageurl"
-          width="1%"
+          width="12.5%"
           render={(imageurl) => (
             <a href={imageurl} target="_blank">
               Link
@@ -88,13 +95,13 @@ function AllReports() {
           title="Opis"
           dataIndex="description"
           key="description"
-          width="30%"
+          width="12.5%"
         />
         <Column
           title="Data Dodania"
           dataIndex="created"
           key="created"
-          width="3.3%"
+          width="12.5%"
           sorter={(a, b) => a.created.localeCompare(b.created)}
           render={(created) => (
             <div className="whitespace-nowrap">{created.substring(0, 10)}</div>
@@ -103,7 +110,7 @@ function AllReports() {
         <Column
           dataIndex="markerid"
           key="deletemarker"
-          width="1%"
+          width="12.5%"
           render={(markerid) => (
             <button
               onClick={() => {
@@ -118,7 +125,7 @@ function AllReports() {
         <Column
           dataIndex="markerid"
           key="deletereport"
-          width="1%"
+          width="12.5%"
           render={(markerid) => (
             <button
               onClick={() => {

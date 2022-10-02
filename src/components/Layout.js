@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Strony
 import Home from "../pages/Home";
 import Admin from "../pages/Admin/Admin";
 import AllReports from "../pages/Admin/AllReports";
 import AllUsers from "../pages/Admin/AllUsers";
 import AllPosts from "../pages/Admin/AllPosts";
+import Scoreboard from "../pages/Scoreboard";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Posts from "../pages/Posts";
 import ErrorPage from "../pages/Errorpage";
 
-// Komponenty
 import Dropdown from "./Dropdown";
 import Navbar from "./Navbar";
 
@@ -43,6 +42,7 @@ function Layout() {
       <Dropdown isOpen={isOpen} toggle={toggle} />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/scoreboard" element={<Scoreboard />} />
         <Route path="/admin" element={<Admin />}>
           <Route index element={<AllReports />} />
           <Route path="zgloszenia" element={<AllReports />} />

@@ -69,7 +69,7 @@ function AllUsers() {
         <Column
           dataIndex="userid"
           key="deleteuser"
-          width="1%"
+          width="20%"
           render={(userid) => (
             <button
               onClick={() => {
