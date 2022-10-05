@@ -4,13 +4,14 @@ import {
   useJsApiLoader,
   MarkerF,
   InfoWindow,
-  MarkerClusterer,
 } from "@react-google-maps/api";
 
 import Axios from "axios";
 import { notification } from "antd";
 
-import markerIcon from "../images/markerIcon.png";
+import defaultMarker from "../images/defaultMarker.png";
+import bagMarker from "../images/bagMarker.png";
+import carMarker from "../images/carMarker.png";
 
 const containerStyle = {
   width: "100%",
@@ -115,8 +116,6 @@ function Map() {
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
-        {/* <MarkerClusterer>
-          {(clusterer) =>  */}
         {markers.map(
           (
             {
@@ -125,6 +124,7 @@ function Map() {
               longitude,
               imageurl,
               description,
+              type,
               updated,
               deleted,
             },
@@ -139,10 +139,15 @@ function Map() {
             return (
               <MarkerF
                 key={markerid}
-                icon={markerIcon}
+                icon={
+                  type === "bag"
+                    ? bagMarker
+                    : type === "car"
+                    ? carMarker
+                    : defaultMarker
+                }
                 position={position}
                 onClick={() => handleActiveMarker(markerid)}
-                // clusterer={clusterer}
               >
                 {activeMarker === markerid ? (
                   <InfoWindow
@@ -226,7 +231,6 @@ function Map() {
             );
           }
         )}
-        {/*  } </MarkerClusterer> */}
       </GoogleMap>
     </div>
   ) : null;
