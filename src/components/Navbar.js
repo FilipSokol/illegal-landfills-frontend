@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import AuthService from "../services/auth.service";
+import authService from "../services/auth.service";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -14,18 +14,12 @@ const Navbar = ({ toggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch (e) {
-      return null;
-    }
-  };
-
   const AuthVerify = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    //! to samo co w useffectcie (refaktor)
+    const user = authService.getCurrentUser();
+
     if (user) {
-      const decodedJwt = parseJwt(user.accessToken);
+      const decodedJwt = authService.parseJwt(user.accessToken);
       if (decodedJwt.role === "admin") {
         setAuthorized(true);
       }
@@ -37,14 +31,14 @@ const Navbar = ({ toggle }) => {
 
   useEffect(() => {
     AuthVerify();
-    const user = AuthService.getCurrentUser();
+    const user = authService.getCurrentUser();
     if (user) {
       setCurrentUser(user);
     }
   }, [location.pathname]);
 
   const logOut = () => {
-    AuthService.logout();
+    authService.logout();
     navigate("/");
     window.location.reload();
   };

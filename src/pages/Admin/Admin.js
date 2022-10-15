@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link, Outlet } from "react-router-dom";
+import authService from "../../services/auth.service";
 
 function Admin() {
   const navigate = useNavigate();
   const location = useLocation();
   const [authorized, setAuthorized] = useState(false);
 
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch (e) {
-      return null;
-    }
-  };
+  const user = authService.getCurrentUser();
 
   const AuthVerify = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      const decodedJwt = parseJwt(user.accessToken);
+      const decodedJwt = authService.parseJwt(user.accessToken);
       if (decodedJwt.role === "admin") {
         setAuthorized(true);
       } else {

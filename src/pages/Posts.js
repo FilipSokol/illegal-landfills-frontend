@@ -1,26 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { Table, notification } from "antd";
+import { Table, Modal, notification } from "antd";
 import Column from "antd/lib/table/Column";
 import Axios from "axios";
+import authService from "../services/auth.service";
 
 function Posts() {
   const [markers, setMarkers] = useState([]);
   const [userId, setUserId] = useState(undefined);
-
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch (e) {
-      return null;
-    }
-  };
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [modalDataDesc, setModalDataDesc] = useState("");
 
   const AuthVerify = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      const decodedJwt = parseJwt(user.accessToken);
+      const decodedJwt = authService.parseJwt(user.accessToken);
       setUserId(decodedJwt.userid);
     }
+  };
+
+  const changeDescription = (markerid) => {
+    Axios.post("http://localhost:3001/api/editdescription", {
+      markerid: markerid,
+      description: modalDataDesc,
+    }).then((response) => {
+      if (response.data.affectedRows) {
+        getMarkers();
+        notification.success({
+          message: "Edytowano opis pomyślnie.",
+          top: 95,
+        });
+      }
+    });
   };
 
   //! DODAĆ ŻE USUWA TEZ FOTKE Z CLOUDINARY
@@ -29,7 +40,7 @@ function Posts() {
       markerid: markerid,
     }).then((response) => {
       if (response.data.affectedRows) {
-        downloadData();
+        getMarkers();
         notification.success({
           message: "Pomyślnie usunięto post.",
           top: 95,
@@ -39,7 +50,7 @@ function Posts() {
   };
 
   //! DOROBIĆ
-  const downloadData = () => {
+  const getMarkers = () => {
     Axios.post("http://localhost:3001/api/usermarkers", {
       userid: userId,
     }).then((response) => {
@@ -49,7 +60,7 @@ function Posts() {
 
   useEffect(() => {
     AuthVerify();
-    downloadData();
+    getMarkers();
   }, [userId]);
 
   return (
@@ -125,8 +136,46 @@ function Posts() {
               </button>
             )}
           />
+          <Column
+            dataIndex="deleted"
+            key="editdecription"
+            width="1%"
+            render={(deleted, data) => (
+              <button
+                className={`border-2 p-2 rounded-lg whitespace-nowrap ${
+                  deleted !== null ? "bg-gray-200" : null
+                }`}
+                onClick={() => {
+                  setModalOpen(true);
+                  setModalData(data);
+                }}
+                disabled={deleted !== null ? true : false}
+              >
+                Edytuj Opis
+              </button>
+            )}
+          />
         </Table>
       </div>
+      <Modal
+        title="Edycja opisu"
+        cancelText="Anuluj"
+        okText="Potwierdź edycje"
+        centered
+        visible={modalOpen}
+        onOk={() => {
+          changeDescription(modalData?.markerid);
+          setModalOpen(false);
+        }}
+        onCancel={() => setModalOpen(false)}
+      >
+        <textarea
+          className="h-24 w-full p-2 border border-slate-200 resize-none outline-0"
+          maxlength="180"
+          defaultValue={modalData?.description}
+          onChange={(e) => setModalDataDesc(e.target.value)}
+        />
+      </Modal>
     </div>
   );
 }

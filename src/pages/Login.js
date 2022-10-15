@@ -21,7 +21,6 @@ function Login() {
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
-        // window.location.reload();
         notification.success({
           message: "Pomyślnie zalogowano.",
           top: 95,
