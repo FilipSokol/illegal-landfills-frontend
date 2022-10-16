@@ -53,7 +53,7 @@ module.exports = {
         pboxlg: "465px",
         pboxxl: "555px",
         box: "107vh",
-        hero: "93.1vh",
+        hero: "93vh",
         fullscreen: "93vh",
         about: "60vh",
         navbar: "7vh",

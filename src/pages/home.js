@@ -5,6 +5,7 @@ import {
   MarkerF,
   InfoWindow,
 } from "@react-google-maps/api";
+import authService from "../services/auth.service";
 
 import Axios from "axios";
 import { Modal, notification } from "antd";
@@ -31,7 +32,9 @@ const center = {
 
 function Home() {
   const [markers, setMarkers] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [modalReportOpen, setModalReportOpen] = useState(true);
+  const [modalEditOpen, setModalEditOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [modalDataDesc, setModalDataDesc] = useState("");
 
@@ -67,6 +70,7 @@ function Home() {
     }).then((response) => {
       if (response.data.affectedRows) {
         getMarkers();
+        addPoints();
         notification.warning({
           message: "Zgłoszono posprzątanie miejsca.",
           top: 95,
@@ -90,17 +94,29 @@ function Home() {
   };
 
   const reportPost = (markerid) => {
-    Axios.post("http://localhost:3001/api/reportmarker", {
-      markerid: markerid,
-    }).then((response) => {
-      if (response.data.affectedRows) {
-        getMarkers();
-        notification.warning({
-          message: "Zgłoszono post.",
-          top: 95,
-        });
-      }
-    });
+    modalReportOpen(true);
+    // Axios.post("http://localhost:3001/api/reportmarker", {
+    //   markerid: markerid,
+    // }).then((response) => {
+    //   if (response.data.affectedRows) {
+    //     getMarkers();
+    //     notification.warning({
+    //       message: "Zgłoszono post.",
+    //       top: 95,
+    //     });
+    //   }
+    // });
+  };
+
+  const addPoints = () => {
+    const user = authService.getCurrentUser();
+    if (user) {
+      const decodedJwt = authService.parseJwt(user.accessToken);
+      Axios.post("http://localhost:3001/api/addpoints", {
+        score: 20,
+        userid: decodedJwt.userid,
+      });
+    }
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -127,7 +143,7 @@ function Home() {
   };
 
   return isLoaded ? (
-    <div className="w-100 h-hero flex">
+    <div className="h-hero w-full flex">
       <GoogleMap
         mapContainerStyle={containerStyle}
         options={options}
@@ -181,7 +197,7 @@ function Home() {
                       deleted={deleted}
                       updated={updated}
                       setModalData={setModalData}
-                      setModalOpen={setModalOpen}
+                      setModalOpen={setModalEditOpen}
                       deleteReportPost={deleteReportPost}
                       trashReportPost={trashReportPost}
                       reportPost={reportPost}
@@ -198,12 +214,12 @@ function Home() {
         cancelText="Anuluj"
         okText="Potwierdź edycje"
         centered
-        visible={modalOpen}
+        visible={modalEditOpen}
         onOk={() => {
           changeDescription(modalData?.markerid);
-          setModalOpen(false);
+          setModalEditOpen(false);
         }}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => setModalEditOpen(false)}
       >
         <textarea
           className="h-24 w-full p-2 border border-slate-200 resize-none outline-0"
@@ -211,6 +227,77 @@ function Home() {
           defaultValue={modalData?.description}
           onChange={(e) => setModalDataDesc(e.target.value)}
         />
+      </Modal>
+      <Modal
+        title="Powód zgłoszenia postu"
+        cancelText="Anuluj"
+        okText="Potwierdź zgłoszenie"
+        centered
+        visible={modalReportOpen}
+        onOk={() => {
+          setModalReportOpen(false);
+        }}
+        okButtonProps={{
+          disabled: reportReason !== "" ? false : true,
+        }}
+        onCancel={() => {
+          setReportReason("");
+          setModalReportOpen(false);
+        }}
+      >
+        <ul class="items-center w-full text-sm font-medium rounded-lg sm:rounded-full border border-gray-300 sm:flex bg-lightgreen">
+          <li class="w-full border-b border-gray-300 sm:border-b-0 sm:border-r">
+            <div class="flex items-center pl-3">
+              <input
+                id="reportDescription"
+                type="radio"
+                value=""
+                name="list-radio"
+                class="w-4 h-4 bg-gray-300 border-gray-300"
+              />
+              <label
+                for="reportDescription"
+                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+              >
+                Opis
+              </label>
+            </div>
+          </li>
+          <li class="w-full border-b border-gray-300 sm:border-b-0 sm:border-r">
+            <div class="flex items-center pl-3">
+              <input
+                id="reportImage"
+                type="radio"
+                value=""
+                name="list-radio"
+                class="w-4 h-4 bg-gray-300 border-gray-300"
+              />
+              <label
+                for="reportImage"
+                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+              >
+                Zdjęcie
+              </label>
+            </div>
+          </li>
+          <li class="w-full border-gray-300">
+            <div class="flex items-center pl-3">
+              <input
+                id="reportBoth"
+                type="radio"
+                value=""
+                name="list-radio"
+                class="w-4 h-4 bg-gray-300 border-gray-300"
+              />
+              <label
+                for="reportBoth"
+                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+              >
+                Opis i zdjęcie
+              </label>
+            </div>
+          </li>
+        </ul>
       </Modal>
     </div>
   ) : null;

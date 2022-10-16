@@ -8,7 +8,7 @@ const MarkerBody = ({
   description,
   deleted,
   updated,
-  setModalOpen,
+  setModalEditOpen,
   setModalData,
   deleteReportPost,
   trashReportPost,
@@ -87,7 +87,7 @@ const MarkerBody = ({
             <button
               className="h-10 w-full bg-violet-500	disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
               onClick={(e) => {
-                setModalOpen(true);
+                setModalEditOpen(true);
                 setModalData({ markerid, description });
               }}
               disabled={deleted !== null}
