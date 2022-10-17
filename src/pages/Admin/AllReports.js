@@ -14,16 +14,16 @@ function AllReports() {
       if (response.data.affectedRows) {
         downloadData();
         notification.success({
-          message: "Pomyślnie usunięto post.",
+          message: "Pomyślnie usunięto marker.",
           top: 95,
         });
       }
     });
   };
 
-  const deleteReport = (markerid) => {
+  const deleteReport = (reportid) => {
     Axios.post("http://localhost:3001/api/deletereport", {
-      markerid: markerid,
+      reportid: reportid,
     }).then((response) => {
       if (response.data.affectedRows) {
         downloadData();
@@ -35,8 +35,15 @@ function AllReports() {
     });
   };
 
+  const addPoints = (userid) => {
+    Axios.post("http://localhost:3001/api/addpoints", {
+      score: 10,
+      userid: userid,
+    });
+  };
+
   const downloadData = () => {
-    Axios.get("http://localhost:3001/api/reportedmarkers").then((response) => {
+    Axios.get("http://localhost:3001/api/reports").then((response) => {
       setMarkers(response.data);
     });
   };
@@ -57,21 +64,14 @@ function AllReports() {
           triggerAsc: "Włącz sortowanie",
           cancelSort: "Wyłącz sortowanie",
         }}
-        rowKey="markerid"
+        rowKey="reportid"
       >
         <Column
-          title="ID Użytkownika"
-          dataIndex="userid"
-          key="userid"
+          title="ID Zgłoszenia"
+          dataIndex="reportid"
+          key="reportid"
           width="12.5%"
-          sorter={(a, b) => a.userid - b.userid}
-        />
-        <Column
-          title="Nazwa Użytkownika"
-          dataIndex="username"
-          key="username"
-          width="12.5%"
-          sorter={(a, b) => a.userid - b.userid}
+          sorter={(a, b) => a.reportid - b.reportid}
         />
         <Column
           title="ID Markera"
@@ -79,6 +79,47 @@ function AllReports() {
           key="markerid"
           width="12.5%"
           sorter={(a, b) => a.markerid - b.markerid}
+        />
+        <Column
+          title="ID Zgłaszającego"
+          dataIndex="reportedbyid"
+          key="reportedbyid"
+          width="12.5%"
+          sorter={(a, b) => a.markerid - b.markerid}
+          render={(reporteduserid) => (
+            <div>
+              {reporteduserid !== null ? reporteduserid : "Niezalogowany"}
+            </div>
+          )}
+        />
+        <Column
+          title="ID Właścicela"
+          dataIndex="reporteduserid"
+          key="reporteduserid"
+          width="12.5%"
+          sorter={(a, b) => a.reporteduserid - b.reporteduserid}
+        />
+        <Column
+          title="Nazwa Właścicela"
+          dataIndex="reportedusername"
+          key="reportedusername"
+          width="12.5%"
+          sorter={(a, b) => a.reportedusername - b.reportedusername}
+        />
+        <Column
+          title="Powód Zgłoszenia"
+          dataIndex="reason"
+          key="reason"
+          width="12.5%"
+          render={(reason) => (
+            <div>
+              {reason === "description"
+                ? "Opis"
+                : reason === "image"
+                ? "Zdjęcie"
+                : "Opis i zdjęcie"}
+            </div>
+          )}
         />
         <Column
           title="Zdjęcie"
@@ -98,7 +139,7 @@ function AllReports() {
           width="12.5%"
         />
         <Column
-          title="Data Dodania"
+          title="Data Dodania Postu"
           dataIndex="created"
           key="created"
           width="12.5%"
@@ -111,25 +152,27 @@ function AllReports() {
           dataIndex="markerid"
           key="deletemarker"
           width="12.5%"
-          render={(markerid) => (
+          render={(markerid, data) => (
             <button
               onClick={() => {
+                addPoints(data.reportedbyid);
                 deleteMarker(markerid);
+                deleteReport(data.reportid);
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >
-              Usuń post
+              Zaakceptuj
             </button>
           )}
         />
         <Column
-          dataIndex="markerid"
-          key="deletereport"
+          dataIndex="reportid"
+          key="reportid"
           width="12.5%"
-          render={(markerid) => (
+          render={(reportid) => (
             <button
               onClick={() => {
-                deleteReport(markerid);
+                deleteReport(reportid);
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >

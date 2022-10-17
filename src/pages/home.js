@@ -33,7 +33,7 @@ const center = {
 function Home() {
   const [markers, setMarkers] = useState([]);
   const [reportReason, setReportReason] = useState("");
-  const [modalReportOpen, setModalReportOpen] = useState(true);
+  const [modalReportOpen, setModalReportOpen] = useState(false);
   const [modalEditOpen, setModalEditOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [modalDataDesc, setModalDataDesc] = useState("");
@@ -93,19 +93,30 @@ function Home() {
     });
   };
 
-  const reportPost = (markerid) => {
-    modalReportOpen(true);
-    // Axios.post("http://localhost:3001/api/reportmarker", {
-    //   markerid: markerid,
-    // }).then((response) => {
-    //   if (response.data.affectedRows) {
-    //     getMarkers();
-    //     notification.warning({
-    //       message: "Zgłoszono post.",
-    //       top: 95,
-    //     });
-    //   }
-    // });
+  const reportPost = () => {
+    setModalReportOpen(true);
+    const user = authService.getCurrentUser();
+    if (user) {
+      const decodedJwt = authService.parseJwt(user.accessToken);
+
+      //! dodać zeby zgloszalo jak sie jest niezalogowany
+      //! problem ze zgłoszeniem dwa razy
+
+      Axios.post("http://localhost:3001/api/report", {
+        markerid: modalData.markerid,
+        reporteduserid: modalData.userid,
+        reportedbyid: decodedJwt.userid,
+        reason: reportReason,
+      }).then((response) => {
+        if (response.data.affectedRows) {
+          getMarkers();
+          notification.warning({
+            message: "Zgłoszono post.",
+            top: 95,
+          });
+        }
+      });
+    }
   };
 
   const addPoints = () => {
@@ -197,7 +208,8 @@ function Home() {
                       deleted={deleted}
                       updated={updated}
                       setModalData={setModalData}
-                      setModalOpen={setModalEditOpen}
+                      setModalEditOpen={setModalEditOpen}
+                      setModalReportOpen={setModalReportOpen}
                       deleteReportPost={deleteReportPost}
                       trashReportPost={trashReportPost}
                       reportPost={reportPost}
@@ -235,69 +247,72 @@ function Home() {
         centered
         visible={modalReportOpen}
         onOk={() => {
+          reportPost();
           setModalReportOpen(false);
         }}
         okButtonProps={{
           disabled: reportReason !== "" ? false : true,
         }}
         onCancel={() => {
+          setModalData({});
           setReportReason("");
           setModalReportOpen(false);
         }}
       >
-        <ul class="items-center w-full text-sm font-medium rounded-lg sm:rounded-full border border-gray-300 sm:flex bg-lightgreen">
-          <li class="w-full border-b border-gray-300 sm:border-b-0 sm:border-r">
-            <div class="flex items-center pl-3">
+        <div className="flex w-full items-center justify-center">
+          <div
+            className="grid w-full grid-cols-3 space-x-2 rounded-xl bg-gray-200 p-2"
+            x-data="app"
+          >
+            <div>
               <input
-                id="reportDescription"
                 type="radio"
-                value=""
                 name="list-radio"
-                class="w-4 h-4 bg-gray-300 border-gray-300"
+                id="reportDescription"
+                className="peer hidden"
+                onChange={() => setReportReason("description")}
               />
               <label
-                for="reportDescription"
-                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+                htmlFor="reportDescription"
+                className="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-lightgreen peer-checked:font-bold peer-checked:text-white"
               >
                 Opis
               </label>
             </div>
-          </li>
-          <li class="w-full border-b border-gray-300 sm:border-b-0 sm:border-r">
-            <div class="flex items-center pl-3">
+
+            <div>
               <input
-                id="reportImage"
                 type="radio"
-                value=""
                 name="list-radio"
-                class="w-4 h-4 bg-gray-300 border-gray-300"
+                id="reportImage"
+                className="peer hidden"
+                onChange={() => setReportReason("image")}
               />
               <label
-                for="reportImage"
-                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+                htmlFor="reportImage"
+                className="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-lightgreen peer-checked:font-bold peer-checked:text-white"
               >
                 Zdjęcie
               </label>
             </div>
-          </li>
-          <li class="w-full border-gray-300">
-            <div class="flex items-center pl-3">
+
+            <div>
               <input
-                id="reportBoth"
                 type="radio"
-                value=""
                 name="list-radio"
-                class="w-4 h-4 bg-gray-300 border-gray-300"
+                id="reportBoth"
+                className="peer hidden"
+                onChange={() => setReportReason("both")}
               />
               <label
-                for="reportBoth"
-                class="py-3 ml-2 w-full text-sm font-medium text-lightblack"
+                htmlFor="reportBoth"
+                className="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-lightgreen peer-checked:font-bold peer-checked:text-white"
               >
                 Opis i zdjęcie
               </label>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Modal>
     </div>
   ) : null;

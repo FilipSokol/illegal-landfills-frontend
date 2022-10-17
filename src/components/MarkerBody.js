@@ -9,6 +9,7 @@ const MarkerBody = ({
   deleted,
   updated,
   setModalEditOpen,
+  setModalReportOpen,
   setModalData,
   deleteReportPost,
   trashReportPost,
@@ -86,7 +87,7 @@ const MarkerBody = ({
           {userOwnMarker === true ? (
             <button
               className="h-10 w-full bg-violet-500	disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
-              onClick={(e) => {
+              onClick={() => {
                 setModalEditOpen(true);
                 setModalData({ markerid, description });
               }}
@@ -97,9 +98,9 @@ const MarkerBody = ({
           ) : (
             <button
               className="h-10 w-full bg-red-500 disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
-              onClick={(e) => {
-                reportPost(markerid);
-                e.currentTarget.disabled = true;
+              onClick={() => {
+                setModalReportOpen(true);
+                setModalData({ markerid, userid });
               }}
               disabled={deleted !== null}
             >
