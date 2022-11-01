@@ -31,7 +31,7 @@ const MarkerBody = ({
     <div className="h-markerbox w-markerbox flex justify-start font-montserrat">
       <div className="h-full w-1/2">
         <img
-          src={imageurl}
+          src={"http://localhost:3001/images/" + imageurl}
           alt="marker"
           className="object-cover h-full w-full rounded-lg"
         />

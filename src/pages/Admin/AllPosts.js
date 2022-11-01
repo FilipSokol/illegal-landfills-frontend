@@ -6,13 +6,15 @@ import Axios from "axios";
 function AllPosts() {
   const [markers, setMarkers] = useState([]);
 
-  //! DODAĆ ŻE USUWA TEZ FOTKE Z CLOUDINARY
-  const deleteMarker = (markerid) => {
+  const deleteMarker = (markerid, imageurl) => {
     Axios.post("http://localhost:3001/api/deletemarker", {
       markerid: markerid,
     }).then((response) => {
       if (response.data.affectedRows) {
         downloadData();
+        Axios.post("http://localhost:3001/api/deleteimage", {
+          imageurl: imageurl,
+        });
         notification.success({
           message: "Pomyślnie usunięto post.",
           top: 95,
@@ -90,10 +92,10 @@ function AllPosts() {
           dataIndex="markerid"
           key="deletemarker"
           width="16.6%"
-          render={(markerid) => (
+          render={(markerid, data) => (
             <button
               onClick={() => {
-                deleteMarker(markerid);
+                deleteMarker(markerid, data.imageurl);
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >
