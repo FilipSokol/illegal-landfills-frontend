@@ -68,10 +68,12 @@ function Posts() {
   }, [userId]);
 
   return (
-    <div className="mx-64 mt-8 pb-8">
+    <div className="mx-2 md:mx-64 mt-8 pb-8">
       <div className="mb-8">
-        <div className="text-lightgreen text-7xl font-bold">Posty</div>
-        <div className="text-lightblack text-3xl font-bold">
+        <div className="text-lightgreen text-4xl md:text-7xl font-bold">
+          Posty
+        </div>
+        <div className="text-lightblack text-lg md:text-3xl font-bold">
           dodane przez Ciebie...
         </div>
       </div>

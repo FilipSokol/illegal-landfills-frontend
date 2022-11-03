@@ -34,7 +34,7 @@ function AllPosts() {
   }, []);
 
   return (
-    <div className="mx-64 mb-16 p-4 border-2 rounded-lg">
+    <div className="w-96 md:w-auto md:mx-64 mb-16 p-4 border-2 rounded-lg">
       <Table
         dataSource={markers}
         pagination={true}
@@ -46,43 +46,36 @@ function AllPosts() {
           cancelSort: "Wyłącz sortowanie",
         }}
         rowKey="markerid"
+        scroll={{ w: true, y: true }}
       >
         <Column
           title="ID Użytkownika"
           dataIndex="userid"
           key="userid"
-          width="16.6%"
           sorter={(a, b) => a.userid - b.userid}
+          columnWidth={1000}
         />
         <Column
           title="ID Markera"
           dataIndex="markerid"
           key="markerid"
-          width="16.6%"
           sorter={(a, b) => a.markerid - b.markerid}
         />
         <Column
           title="Zdjęcie"
           dataIndex="imageurl"
           key="imageurl"
-          width="16.6%"
           render={(imageurl) => (
             <a href={imageurl} target="_blank">
               Link
             </a>
           )}
         />
-        <Column
-          title="Opis"
-          dataIndex="description"
-          key="description"
-          width="30%"
-        />
+        <Column title="Opis" dataIndex="description" key="description" />
         <Column
           title="Data Dodania"
           dataIndex="created"
           key="created"
-          width="16.6%"
           sorter={(a, b) => a.created.localeCompare(b.created)}
           render={(created) => (
             <div className="whitespace-nowrap">{created.substring(0, 10)}</div>
@@ -91,7 +84,6 @@ function AllPosts() {
         <Column
           dataIndex="markerid"
           key="deletemarker"
-          width="16.6%"
           render={(markerid, data) => (
             <button
               onClick={() => {

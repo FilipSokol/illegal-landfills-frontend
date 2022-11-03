@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import authService from "../services/auth.service";
 
+import logo from "../images/logo.svg";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/antd.min.css";
-import logo from "../images/logo.svg";
 
 const Navbar = ({ toggle }) => {
   const [currentUser, setCurrentUser] = useState(undefined);

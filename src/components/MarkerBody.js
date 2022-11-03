@@ -28,20 +28,20 @@ const MarkerBody = ({
   }, []);
 
   return (
-    <div className="h-markerbox w-markerbox flex justify-start font-montserrat">
-      <div className="h-full w-1/2">
+    <div className="h-markerbox w-full md:w-markerbox flex flex-col md:flex-row justify-start font-montserrat">
+      <div className="h-auto w-full mb-2 md:mb-0 md:h-full md:w-1/2">
         <img
           src={"http://localhost:3001/images/" + imageurl}
           alt="marker"
           className="object-cover h-full w-full rounded-lg"
         />
       </div>
-      <div className="flex flex-col pl-2 text-lightblack w-1/2">
+      <div className="w-full md:w-1/2 flex flex-col md:pl-2 text-lightblack">
         <div className="h-auto w-full flex flex-col">
           <div className="h-8 w-full text-2xl flex justify-center items-center rounded-t-lg  bg-lightgreen text-white">
             Opis
           </div>
-          <div className="h-28 w-full p-2 shadow-md flex justify-start items-start rounded-b-lg break-all">
+          <div className="h-auto md:h-28 w-full p-2 shadow-md flex justify-start items-start rounded-b-lg break-all">
             {description !== null ? description : "Brak opisu."}
           </div>
         </div>
@@ -49,7 +49,7 @@ const MarkerBody = ({
           <div className="h-8 w-full text-2xl flex justify-center items-center rounded-t-lg  bg-lightgreen text-white">
             Aktualizacje
           </div>
-          <div className="h-16 w-full p-2 shadow-md flex flex-col justify-start items-start rounded-b-lg">
+          <div className="h-auto md:h-16 w-full p-2 shadow-md flex flex-col justify-start items-start rounded-b-lg">
             {deleted === null && updated === null && "Brak aktualizacji."}
             <div>
               {deleted !== null &&
@@ -62,7 +62,7 @@ const MarkerBody = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col h-full w-full mt-3 justify-around">
+        <div className="flex flex-col h-full w-full mt-3 justify-around gap-y-3 md:gap-y-0">
           <button
             className="h-10 w-full bg-sky-400	disabled:bg-neutral-700 rounded-lg text-white text-lg shadow-md"
             onClick={(e) => {

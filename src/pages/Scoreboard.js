@@ -14,11 +14,13 @@ function Scoreboard() {
   }, []);
 
   return (
-    <div className="mx-64 mt-8 pb-8">
+    <div className="mx-2 md:mx-64 mt-8 pb-8">
       <div className="mb-8 flex justify-between">
         <div>
-          <div className="text-lightgreen text-7xl font-bold">Ranking</div>
-          <div className="text-lightblack text-3xl font-bold">
+          <div className="text-lightgreen text-4xl md:text-7xl font-bold">
+            Ranking
+          </div>
+          <div className="text-lightblack text-lg md:text-3xl font-bold">
             najbardziej aktywnych użytkowników...
           </div>
         </div>
