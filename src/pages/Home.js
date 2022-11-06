@@ -44,7 +44,6 @@ function Home() {
     });
   };
 
-  //! kolejnosc
   useEffect(() => {
     getMarkers();
   }, []);
@@ -96,16 +95,28 @@ function Home() {
   const reportPost = () => {
     setModalReportOpen(true);
     const user = authService.getCurrentUser();
+
     if (user) {
       const decodedJwt = authService.parseJwt(user.accessToken);
-
-      //! dodać zeby zgloszalo jak sie jest niezalogowany
-      //! problem ze zgłoszeniem dwa razy
 
       Axios.post("http://localhost:3001/api/report", {
         markerid: modalData.markerid,
         reporteduserid: modalData.userid,
         reportedbyid: decodedJwt.userid,
+        reason: reportReason,
+      }).then((response) => {
+        if (response.data.affectedRows) {
+          getMarkers();
+          notification.warning({
+            message: "Zgłoszono post.",
+            top: 95,
+          });
+        }
+      });
+    } else {
+      Axios.post("http://localhost:3001/api/report", {
+        markerid: modalData.markerid,
+        reporteduserid: modalData.userid,
         reason: reportReason,
       }).then((response) => {
         if (response.data.affectedRows) {
@@ -144,8 +155,6 @@ function Home() {
   }, []);
 
   const [map, setMap] = useState(null);
-
-  // API ^
 
   const [activeMarker, setActiveMarker] = useState(null);
 
@@ -197,7 +206,6 @@ function Home() {
                 position={position}
                 onClick={() => handleActiveMarker(markerid)}
               >
-                //! dać lepsze nazwy z handle
                 {activeMarker === markerid ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <MarkerBody

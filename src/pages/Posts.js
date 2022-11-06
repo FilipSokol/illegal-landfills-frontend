@@ -53,7 +53,6 @@ function Posts() {
     });
   };
 
-  //! DOROBIĆ
   const getMarkers = () => {
     Axios.post("http://localhost:3001/api/usermarkers", {
       userid: userId,

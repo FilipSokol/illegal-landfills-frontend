@@ -31,7 +31,6 @@ function Register() {
   Axios.defaults.withCredentials = true;
 
   const validation = () => {
-    // USERNAME
     if (usernameRegex.test(usernameReg)) {
       setUsernameVal(true);
       setUsernameMes("");
@@ -40,7 +39,6 @@ function Register() {
       setUsernameMes("Niepoprawna składnia nazwy użytkownika");
     }
 
-    // EMAIL
     if (emailRegex.test(emailReg)) {
       setEmailVal(true);
       setEmailMes("");
@@ -49,7 +47,6 @@ function Register() {
       setEmailMes("Niepoprawna składnia e-maila");
     }
 
-    // PASSWORD
     if (passwordRegex.test(passwordReg)) {
       setPasswordVal(true);
       setPasswordMes("");
@@ -58,7 +55,6 @@ function Register() {
       setPasswordMes("Niepoprawna składnia hasła");
     }
 
-    // SECOND PASSWORD
     if (passwordReg === secPasswordReg) {
       setSecPasswordVal(true);
       setSecPasswordMes("");
@@ -67,7 +63,6 @@ function Register() {
       setSecPasswordMes("Podane hasła nie zgadzają się");
     }
 
-    // ACTUAL REGISTER
     if (
       usernameVal === true &&
       emailVal === true &&

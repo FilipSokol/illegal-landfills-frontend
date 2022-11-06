@@ -16,7 +16,6 @@ const Navbar = ({ toggle }) => {
   const location = useLocation();
 
   const AuthVerify = () => {
-    //! to samo co w useffectcie (refaktor)
     const user = authService.getCurrentUser();
 
     if (user) {

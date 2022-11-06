@@ -13,7 +13,6 @@ const MarkerBody = ({
   setModalData,
   deleteReportPost,
   trashReportPost,
-  reportPost,
 }) => {
   const [userOwnMarker, isUserOwnMarker] = useState(false);
   const user = authService.getCurrentUser();
