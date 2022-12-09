@@ -158,8 +158,8 @@ function AllReports() {
             <button
               onClick={() => {
                 addPoints(data.reportedbyid);
-                deleteMarker(markerid, data.imageurl);
                 deleteReport(data.reportid);
+                deleteMarker(markerid, data.imageurl);
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >
