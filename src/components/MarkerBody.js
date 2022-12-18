@@ -53,7 +53,7 @@ const MarkerBody = ({
             <div>
               {deleted !== null &&
                 deleted.substring(0, 10) +
-                  " - Post zostanie usunięty. Zgłoszono posprzątanie."}
+                  " - Znacznik zostanie usunięty. Zgłoszono posprzątanie."}
             </div>
             <div>
               {updated !== null &&
@@ -103,7 +103,7 @@ const MarkerBody = ({
               }}
               disabled={deleted !== null}
             >
-              Zgłoś post
+              Zgłoś znacznik
             </button>
           )}
         </div>

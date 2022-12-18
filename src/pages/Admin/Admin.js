@@ -40,7 +40,7 @@ function Admin() {
                     : "py-2 px-4 border-x-2 border-t-2 text-sm text-center md:text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
                 }
               >
-                Zgłoszone Posty
+                Wszystkie Zgłoszenia
               </div>
             </Link>
             <Link to="markery">
@@ -51,7 +51,7 @@ function Admin() {
                     : "py-2 px-4 border-x-2 border-t-2 text-center text-sm md:text-lg bg-green-300 rounded-t-xl text-lightblack hover:text-lightblack"
                 }
               >
-                Wszystkie Posty
+                Wszystkie Znaczniki
               </div>
             </Link>
             <Link to="uzytkownicy">

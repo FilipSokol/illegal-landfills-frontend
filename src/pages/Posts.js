@@ -70,7 +70,7 @@ function Posts() {
     <div className="mx-2 md:mx-64 mt-8 pb-8">
       <div className="mb-8">
         <div className="text-lightgreen text-4xl md:text-7xl font-bold">
-          Posty
+          Znaczniki
         </div>
         <div className="text-lightblack text-lg md:text-3xl font-bold">
           dodane przez Ciebie...
@@ -91,10 +91,10 @@ function Posts() {
           rowKey="markerid"
         >
           <Column
-            title="ID Markera"
+            title="ID Znacznika"
             dataIndex="markerid"
             key="markerid"
-            width="2.8%"
+            width="4%"
             sorter={(a, b) => a.markerid - b.markerid}
           />
           <Column
@@ -140,7 +140,7 @@ function Posts() {
                 }}
                 className={"border-2 p-2 rounded-lg whitespace-nowrap"}
               >
-                Usuń post
+                Usuń Znacznik
               </button>
             )}
           />

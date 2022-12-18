@@ -88,7 +88,7 @@ const Navbar = ({ toggle }) => {
                 to="/posty"
                 className="p-4 text-lightblack hover:text-lightblack"
               >
-                Moje Posty
+                Moje Znaczniki
               </Link>
               <Link
                 onClick={logOut}

@@ -56,7 +56,7 @@ function AllPosts() {
           columnWidth={1000}
         />
         <Column
-          title="ID Markera"
+          title="ID Znacznika"
           dataIndex="markerid"
           key="markerid"
           sorter={(a, b) => a.markerid - b.markerid}
@@ -91,7 +91,7 @@ function AllPosts() {
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >
-              Usuń post
+              Usuń Znacznik
             </button>
           )}
         />

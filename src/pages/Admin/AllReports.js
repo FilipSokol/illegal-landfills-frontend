@@ -76,7 +76,7 @@ function AllReports() {
           sorter={(a, b) => a.reportid - b.reportid}
         />
         <Column
-          title="ID Markera"
+          title="ID Znacznika"
           dataIndex="markerid"
           key="markerid"
           width="12.5%"
@@ -178,7 +178,7 @@ function AllReports() {
               }}
               className={"border-2 p-2 rounded-lg whitespace-nowrap"}
             >
-              Usuń zgłoszenie
+              Usuń Zgłoszenie
             </button>
           )}
         />

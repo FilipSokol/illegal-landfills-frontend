@@ -108,7 +108,7 @@ function Home() {
         if (response.data.affectedRows) {
           getMarkers();
           notification.warning({
-            message: "Zgłoszono post.",
+            message: "Zgłoszono znacznik.",
             top: 95,
           });
         }
@@ -122,7 +122,7 @@ function Home() {
         if (response.data.affectedRows) {
           getMarkers();
           notification.warning({
-            message: "Zgłoszono post.",
+            message: "Zgłoszono znacznik.",
             top: 95,
           });
         }
@@ -249,7 +249,7 @@ function Home() {
         />
       </Modal>
       <Modal
-        title="Powód zgłoszenia postu"
+        title="Powód zgłoszenia znacznika"
         cancelText="Anuluj"
         okText="Potwierdź zgłoszenie"
         centered
